@@ -22,17 +22,24 @@ public class Logic {
     }
 
     public boolean move(Cell source, Cell dest) {
-        boolean rst = false;
+        boolean rst = true;
         int index = this.findBy(source);
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
             if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
+                for (int i = 0; i < steps.length; i++) {
+                    if (this.findBy(steps[i]) != -1) {
+                        throw new IllegalStateException(
+                                String.format("Could not way over another figure from %s to %s", source, dest)
+                        );
+                    }
+                }
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
+                }
             }
-        }
         return rst;
-    }
+        }
 
     public void clean() {
         for (int position = 0; position != this.figures.length; position++) {
