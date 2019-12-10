@@ -15,17 +15,16 @@ public class LogicTest {
         Figure bishopBlack = new BishopBlack(Cell.C1);
         Logic logic = new Logic();
         logic.add(bishopBlack);
-        logic.move(Cell.C1, Cell.E3);
         assertThat(true, is(logic.move(Cell.C1, Cell.E3)));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void whenMoveThenErr() {
         Figure bishopBlackFirst = new BishopBlack(Cell.C1);
         Figure bishopBlackSecond = new BishopBlack(Cell.D2);
         Logic logic = new Logic();
         logic.add(bishopBlackFirst);
         logic.add(bishopBlackSecond);
-        logic.move(Cell.C1, Cell.E3);
+        assertThat(false, is(logic.move(Cell.C1, Cell.E3)));
     }
 }

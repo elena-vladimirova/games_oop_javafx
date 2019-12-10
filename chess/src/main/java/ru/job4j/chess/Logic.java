@@ -17,6 +17,17 @@ public class Logic {
     private final Figure[] figures = new Figure[32];
     private int index = 0;
 
+    private boolean isWayFree(Cell[] steps) {
+        boolean result = true;
+        for (int i = 0; i < steps.length; i++) {
+            if (this.findBy(steps[i]) != -1) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
     public void add(Figure figure) {
         this.figures[this.index++] = figure;
     }
@@ -26,14 +37,7 @@ public class Logic {
         int index = this.findBy(source);
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                for (int i = 0; i < steps.length; i++) {
-                    if (this.findBy(steps[i]) != -1) {
-                        throw new IllegalStateException(
-                                String.format("Could not way over another figure from %s to %s", source, dest)
-                        );
-                    }
-                }
+            if (steps.length > 0 && steps[steps.length - 1].equals(dest) && isWayFree(steps)) {
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
                 }
